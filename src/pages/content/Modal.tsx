@@ -3,13 +3,38 @@ import React from "react";
 
 export default function Modal(): JSX.Element {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
-  const [isRecording, setIsRecording] = React.useState(false);
-  const [audioStream, setAudioStream] = React.useState<MediaStream | null>(null);
 
   const state = React.useRef({
     isRecording: false,
+    audioChunks: [] as Blob[],
     audioStream: null as MediaStream | null,
+    mediaRecorder: null as MediaRecorder | null,
   });
+
+  function whisperRequest(blob: Blob[]) {
+    const formData = new FormData();
+    const audioBlob = new Blob(blob, { type: "audio/wav" });
+    const audioUrl = URL.createObjectURL(audioBlob);
+    const audio = new Audio(audioUrl);
+    audio.play();
+    formData.append("file", audioBlob, "audio.wav");
+    formData.append("model", "whisper-1");
+    formData.append("language", "en");
+
+    const apiKey = "";
+    fetch("https://api.openai.com/v1/audio/transcriptions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: formData,
+    }).then(async (response) => {
+      console.log(response);
+      const json = await response.json();
+      console.log(json.text);
+      alert(json.text);
+    });
+  }
 
   React.useEffect(() => {
     const button = buttonRef.current;
@@ -20,9 +45,10 @@ export default function Modal(): JSX.Element {
       //request audio
       if (state.current.isRecording) {
         console.log("Stopping audio stream");
-        audioStream?.getTracks().forEach((track) => track.stop());
+        state.current.audioStream?.getTracks().forEach((track) => track.stop());
         button.style.color = "white";
         state.current.isRecording = false;
+        state.current.mediaRecorder?.stop();
         return;
       }
       navigator.mediaDevices
@@ -31,7 +57,20 @@ export default function Modal(): JSX.Element {
           button.style.color = "red";
           state.current.isRecording = true;
           state.current.audioStream = stream;
+          state.current.mediaRecorder = new MediaRecorder(stream);
           console.log("Audio stream acquired");
+          state.current.audioChunks = [];
+          state.current.mediaRecorder.start();
+
+          state.current.mediaRecorder.ondataavailable = (e) => {
+            state.current.audioChunks.push(e.data);
+          };
+
+          state.current.mediaRecorder.onstop = () => {
+            console.log("Audio recording stopped");
+            const audioBlob = new Blob(state.current.audioChunks, { type: "audio/wav" });
+            whisperRequest([audioBlob]);
+          };
         })
         .catch((err) => {
           alert("No microphone detected.");
