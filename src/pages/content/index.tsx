@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import "@assets/styles/tailwind.css";
 import Content from "@src/pages/content/content";
 import { createRoot } from "react-dom/client";
