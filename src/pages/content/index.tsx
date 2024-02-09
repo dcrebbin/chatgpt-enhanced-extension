@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import "@assets/styles/tailwind.css";
-import Modal from "@pages/content/Modal";
+import Content from "@src/pages/content/content";
 import { createRoot } from "react-dom/client";
 
 async function init() {
@@ -17,8 +17,7 @@ async function init() {
     return;
   }
   const root = createRoot(mainRoot);
-  root.render(<Modal />);
-  //set child to parent
+  root.render(<Content />);
 }
 
 init();

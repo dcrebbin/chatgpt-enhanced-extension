@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
 
-export default function Modal(): JSX.Element {
+export default function Content(): JSX.Element {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
 
   const state = React.useRef({
