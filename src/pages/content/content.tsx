@@ -1,14 +1,7 @@
 import React from "react";
 
-type OpenAiTtsRequest = {
-  input: string;
-  model: string;
-  voice: string;
-};
-
 export default function Content(): JSX.Element {
   const recorderRef = React.useRef<HTMLButtonElement>(null);
-  const speakerRef = React.useRef<HTMLButtonElement>(null);
 
   const state = React.useRef({
     isRecording: false,
@@ -47,32 +40,6 @@ export default function Content(): JSX.Element {
         console.error("Error transcribing audio", err);
         alert("Error transcribing audio, check console for details.");
       });
-  }
-
-  function textToSpeech(text: string) {
-    const apiKey = state.current.apiKey;
-    const body: OpenAiTtsRequest = {
-      input: text,
-      model: "tts-1",
-      voice: "alloy",
-    };
-    const headers = {
-      accept: "audio/mpeg",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Security-Policy": "default-src 'self'; media-src *;",
-    };
-    fetch("https://api.openai.com/v1/audio/speech", {
-      headers: headers,
-      body: JSON.stringify(body),
-      method: "POST",
-    }).then(async (response) => {
-      console.log(response);
-      const blob = await response.blob();
-
-      const audio = new Audio(URL.createObjectURL(blob));
-      audio.play();
-    });
   }
 
   function addTextToPrompt(text: string) {
@@ -124,22 +91,11 @@ export default function Content(): JSX.Element {
 
   React.useEffect(() => {
     const recorder = recorderRef.current;
-    const speaker = speakerRef.current;
-    if (!recorder || !speaker) {
+    if (!recorder) {
       return;
     }
 
     loadApiKey();
-
-    speaker.addEventListener("click", () => {
-      const selection = window.getSelection();
-      const text = selection?.toString();
-      if (!text) {
-        alert("Please select some text to speak");
-        return;
-      }
-      textToSpeech(text);
-    });
 
     recorder.addEventListener("click", () => {
       if (state.current.apiKey == "sk-" || !state.current.apiKey) {
