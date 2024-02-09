@@ -33,13 +33,19 @@ export default function Modal(): JSX.Element {
       .then(async (response) => {
         console.log(response);
         const json = await response.json();
-        console.log(json.text);
-        alert(json.text);
+        if (response.status === 200) {
+          addTextToPrompt(json.text);
+        }
       })
       .catch((err) => {
         console.error("Error transcribing audio", err);
         alert("Error transcribing audio, check console for details.");
       });
+  }
+
+  function addTextToPrompt(text: string) {
+    const promptInput = document.querySelector("#prompt-textarea") as HTMLTextAreaElement;
+    promptInput.value += text;
   }
 
   function initRecorder(button: HTMLButtonElement) {
