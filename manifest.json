@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "ChatGPT Enhanced",
+  "description": "Bringing the ChatGPT app features to the browser",
+  "version": "0.1.0",
+  "author": "Devon Crebbin",
+  "action": {
+    "default_icon": {
+      "32": "icon32.png"
+    }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "permissions": ["activeTab", "contextMenus"],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*", "<all_urls>"],
+      "js": ["src/pages/content/index.tsx"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["icon128.png", "icon32.png"],
+      "matches": []
+    }
+  ]
+}
