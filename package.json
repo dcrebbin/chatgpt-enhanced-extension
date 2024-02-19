@@ -1,9 +1,13 @@
 {
   "name": "chatgpt-enhanced",
-  "version": "0.1.0",
-  "description": "Bringing the ChatGPT app features to the browser",
+  "version": "1.0.0",
+  "description": "Adding enhanced features to ChatGPT (Speech to Text by Whisper-1)",
   "license": "MIT",
   "author": "Devon Crebbin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dcrebbin/chatgpt-enhanced-extension"
+  },
   "scripts": {
     "build": "vite build"
   },
