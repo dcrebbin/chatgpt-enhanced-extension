@@ -1,12 +1,20 @@
 html {
-  background-color: black;
-  color: white;
+  background-color: white;
+}
+
+body {
+  margin: 0;
 }
 
 .container {
+  width: 100%;
+  background-color: rgb(229, 231, 235);
+  height: 10rem;
+  color: rgb(254, 94, 8);
   display: flex;
-  flex-direction: column;
+  gap: 4px;
   align-items: center;
+  justify-content: center;
 }
 
 input {
@@ -17,6 +25,14 @@ input {
   border-width: 1px;
   border-color: white;
   font-size: large;
+}
+
+a:hover {
+  text-decoration: underline !important;
+}
+
+button:hover {
+  background-color: #fb651e !important;
 }
 
 button {
