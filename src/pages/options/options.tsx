@@ -15,8 +15,6 @@ export default function Options(): JSX.Element {
     });
   };
 
-  // Restores select box and checkbox state using the preferences
-  // stored in chrome.storage.
   const restoreOptions = () => {
     chrome.storage.sync.get({ apiKey: "sk-" }, (items) => {
       apiKeyRef.current!.value = items.apiKey;
@@ -69,6 +67,7 @@ export default function Options(): JSX.Element {
           <button onClick={saveOptions} style={{ backgroundColor: "#FDA942", color: "white", paddingLeft: "2rem", paddingRight: "2rem", height: "2rem", cursor: "pointer" }}>
             Save
           </button>
+          <div ref={statusRef} style={{ color: "green", fontWeight: "bold" }}></div>
         </div>
         <div style={{ backgroundColor: "black", width: "100%", margin: "5rem" }}>
           <img src={exampleUrl} alt="example" style={{ width: "100%", height: "auto" }} />
