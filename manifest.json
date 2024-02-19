@@ -16,7 +16,7 @@
     "48": "icon48.png",
     "128": "icon128.png"
   },
-  "permissions": ["activeTab", "contextMenus", "storage"],
+  "permissions": [ "storage"],
   "content_scripts": [
     {
       "matches": ["https://chat.openai.com/*"],
